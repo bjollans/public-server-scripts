@@ -12,9 +12,9 @@ if [[ ! -f .creds.json ]]; then
     exit 1
 fi
 
-cat .creds.json | jq -r '.GithubSSH' > ~/.ssh/github_read_only
-chmod 400 ~/.ssh/github_read_only
+cat .creds.json | jq -r '.GithubSSH' > github_read_only_key
+chmod 400 github_read_only_key
 eval "$(ssh-agent -s)"
-ssh-add ~/.ssh/github_read_only
+ssh-add github_read_only_key
 ssh-keyscan github.com >> ~/.ssh/known_hosts
 git clone $URL
