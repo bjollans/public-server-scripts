@@ -31,8 +31,13 @@ if [[ ! -f .creds.json ]]; then
     exit 1
 fi
 
+install_basics() {
+    sudo apt-get update
+    sudo apt-get install -y jq
+}
+
 echo "Setting up dependencies"
-./install_basics.sh
+install_basics
 
 cat .creds.json | jq -r '.GithubSSH' > github_read_only_key
 chmod 400 github_read_only_key
@@ -43,4 +48,4 @@ git clone $URL
 cd $(echo $URL | sed 's|.*/||;s|.git||')
 git checkout $BRANCH
 cd -
-rm github_read_only_key
+rm -f github_read_only_key
